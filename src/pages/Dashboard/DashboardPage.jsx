@@ -11,6 +11,7 @@ function DashboardPage() {
   const [sortOrder, setSortOrder] = useState("asc");
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     if (!token) {
@@ -24,7 +25,7 @@ function DashboardPage() {
 
   const fetchChecklists = async () => {
     try {
-      const res = await axios.get("http://94.74.86.174:8080/api/checklist", {
+      const res = await axios.get(`${BASE_URL}/checklist`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setChecklists(res.data.data);
@@ -41,12 +42,9 @@ function DashboardPage() {
 
   const fetchProgress = async (checklistId) => {
     try {
-      const res = await axios.get(
-        `http://94.74.86.174:8080/api/checklist/${checklistId}/item`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const res = await axios.get(`${BASE_URL}/checklist/${checklistId}/item`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const items = res.data.data;
       const total = items.length;
       const done = items.filter((item) => item.itemCompletionStatus).length;
@@ -65,7 +63,7 @@ function DashboardPage() {
     if (!newTitle.trim()) return;
     try {
       await axios.post(
-        "http://94.74.86.174:8080/api/checklist",
+        `${BASE_URL}/checklist`,
         { name: newTitle },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -80,7 +78,7 @@ function DashboardPage() {
 
   const deleteChecklist = async (id) => {
     try {
-      await axios.delete(`http://94.74.86.174:8080/api/checklist/${id}`, {
+      await axios.delete(`${BASE_URL}/checklist/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       toast.success("Checklist dihapus");

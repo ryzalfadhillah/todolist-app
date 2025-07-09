@@ -8,11 +8,12 @@ function RegisterPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://94.74.86.174:8080/api/register", {
+      await axios.post(`${BASE_URL}register`, {
         email,
         username,
         password,

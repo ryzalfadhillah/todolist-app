@@ -8,6 +8,7 @@ function ChecklistDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const [items, setItems] = useState([]);
   const [newItemName, setNewItemName] = useState("");
@@ -26,12 +27,9 @@ function ChecklistDetailPage() {
 
   const fetchItems = async () => {
     try {
-      const res = await axios.get(
-        `http://94.74.86.174:8080/api/checklist/${id}/item`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const res = await axios.get(`${BASE_URL}/checklist/${id}/item`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setItems(res.data.data);
     } catch (err) {
       toast.error("Gagal mengambil data item!");
@@ -46,7 +44,7 @@ function ChecklistDetailPage() {
 
     try {
       await axios.post(
-        `http://94.74.86.174:8080/api/checklist/${id}/item`,
+        `${BASE_URL}/checklist/${id}/item`,
         { itemName: newItemName },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -61,7 +59,7 @@ function ChecklistDetailPage() {
   const toggleItemStatus = async (itemId) => {
     try {
       await axios.put(
-        `http://94.74.86.174:8080/api/checklist/${id}/item/${itemId}`,
+        `${BASE_URL}/checklist/${id}/item/${itemId}`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -75,12 +73,9 @@ function ChecklistDetailPage() {
 
   const deleteItem = async (itemId) => {
     try {
-      await axios.delete(
-        `http://94.74.86.174:8080/api/checklist/${id}/item/${itemId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await axios.delete(`${BASE_URL}/checklist/${id}/item/${itemId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       toast.success("Item dihapus!");
       fetchItems();
     } catch (err) {
@@ -96,7 +91,7 @@ function ChecklistDetailPage() {
 
     try {
       await axios.put(
-        `http://94.74.86.174:8080/api/checklist/${id}/item/rename/${itemId}`,
+        `${BASE_URL}/checklist/${id}/item/rename/${itemId}`,
         { itemName: editedName },
         { headers: { Authorization: `Bearer ${token}` } }
       );

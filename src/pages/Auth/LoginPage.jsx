@@ -7,11 +7,12 @@ function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://94.74.86.174:8080/api/login", {
+      const res = await axios.post(`${BASE_URL}/login`, {
         username,
         password,
       });
